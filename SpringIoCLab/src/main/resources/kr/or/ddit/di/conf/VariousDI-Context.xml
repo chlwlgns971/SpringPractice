@@ -14,5 +14,7 @@
 		
 		p:fsfile="file:D:/contents/images/cat1.jpg"
 		p:cpfile="classpath:/log4j2.xml"
+		
+		p:dbInfo-ref="dbInfo"
 	/>
 </beans>

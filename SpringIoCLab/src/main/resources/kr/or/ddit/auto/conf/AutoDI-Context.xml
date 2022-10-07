@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- 	Auto Regist Auto Injection : Annotation기반 -->
+	<context:annotation-config />
+	<context:component-scan base-package="kr.or.ddit.sample" use-default-filters="false"></context:component-scan>
+<!-- 	auto regist -->
+	<!-- @Component
+	@Reprository(DAO역할)
+	@Service
+	@Controller
+	
+	@Configuration : 지금은 설정파일을 xml로 만드는데, 자바언어로 만들 때 사용
+	@ControllerAdvice
+	@RESTController : JSON이 같이 따라온다. 사용하는 모든데이터는 JSON
+	@RESTControllerAdvice
+	Annotation은 사전적 의미로 주석이라는 의미이다. 
+	하지만 일반적으로 사용하는 주석이랑은 크게 다른데, 일반적으로 사용하는 주석은 코드를 읽는 사람만들 대상으로 하고,
+	Annotation은 사람과 컴파일러가 같이 사용하는 주석이다. -->
+	
+<!-- 	@AutoWired : type을 기준으로 빈을 검색하고, 주입. -->
+<!-- 	@Resource : 검색기준을 설정할 수 있음  -->
+</beans>

@@ -3,9 +3,12 @@ package kr.or.ddit.sample.dao;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository("dao_MariaDB")
 public class SampleDAOImpl_Maria implements SampleDAO {
 	private static final Map<Integer, String[]> TEAMTABLE = new LinkedHashMap<Integer, String[]>();
 	

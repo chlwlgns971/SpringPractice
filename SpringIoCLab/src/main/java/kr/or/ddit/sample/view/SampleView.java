@@ -1,7 +1,13 @@
 package kr.or.ddit.sample.view;
 
+import javax.inject.Inject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import kr.or.ddit.sample.dao.SampleDAO;
 import kr.or.ddit.sample.dao.SampleDAOImpl_Oracle;
@@ -10,13 +16,16 @@ import kr.or.ddit.sample.service.SampleServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class SampleView {
 	private SampleService service;
 	
 	public SampleView() {
 		log.info("{} 객체 생성",this);
 	}
-	
+	//@Autowired
+	@Required
+	@Inject
 	public void setService(SampleService service) {
 		this.service = service;
 	}

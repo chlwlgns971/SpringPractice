@@ -40,7 +40,7 @@
 		c:strList-ref="list"
 		c:dateSet-ref="set"
 		c:map-ref="map"
-		c:props-ref="props"
+		c:props-ref="dbInfo"
 		c:array-ref="stringArray"
 	/>
 	
@@ -48,7 +48,7 @@
 		p:strList-ref="list"
 		p:dateSet-ref="set"
 		p:map-ref="map"
-		p:props-ref="props"
+		p:props-ref="dbInfo"
 		p:array-ref="stringArray"
 	/>
 		
