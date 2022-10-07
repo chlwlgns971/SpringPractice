@@ -9,6 +9,9 @@
 	<configs>
 		<config>src/main/resources/kr/or/ddit/sample/conf/Sample-Context.xml</config>
 		<config>src/main/resources/kr/or/ddit/sample/conf/DI-Context.xml</config>
+		<config>src/main/resources/kr/or/ddit/di/conf/VariousDI-Context.xml</config>
+		<config>src/main/resources/kr/or/ddit/di/conf/CollectionDI-Context.xml</config>
+		<config>src/main/resources/kr/or/ddit/di/conf/Properties-Context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
