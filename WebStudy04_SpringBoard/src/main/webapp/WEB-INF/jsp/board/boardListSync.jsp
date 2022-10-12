@@ -14,28 +14,28 @@
 		</tr>
 	</thead>
 	<tbody id="listBody">
-<%-- 		<c:choose> --%>
-<%-- 			<c:when test="${not empty boardList }"> --%>
-<%-- 				<c:forEach items="${boardList }" var="board"> --%>
-<%-- 					<c:url value="/board/boardView.do" var="viewURL"> --%>
-<%-- 						<c:param name="what" value="${board.boNo }" /> --%>
-<%-- 					</c:url> --%>
-<!-- 					<tr> -->
-<%-- 						<td>${board.boNo }</td> --%>
-<%-- 						<td><a href="${viewURL }">${board.boTitle }</a></td> --%>
-<%-- 						<td>${board.boWriter }</td> --%>
-<%-- 						<td>${board.boDate }</td> --%>
-<%-- 						<td>${board.boHit }</td> --%>
-<%-- 						<td>${board.boRec }</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:otherwise> --%>
-<!-- 				<tr> -->
-<!-- 					<td colspan="6"> 조건에 맞는 글이 없음. </td> -->
-<!-- 				</tr> -->
-<%-- 			</c:otherwise> --%>
-<%-- 		</c:choose> --%>
+		<c:choose>
+			<c:when test="${not empty boardList }">
+				<c:forEach items="${boardList }" var="board">
+					<c:url value="/board/boardView.do" var="viewURL">
+						<c:param name="what" value="${board.boNo }" />
+					</c:url>
+					<tr>
+						<td>${board.boNo }</td>
+						<td><a href="${viewURL }">${board.boTitle }</a></td>
+						<td>${board.boWriter }</td>
+						<td>${board.boDate }</td>
+						<td>${board.boHit }</td>
+						<td>${board.boRec }</td>
+					</tr>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<tr>
+					<td colspan="6"> 조건에 맞는 글이 없음. </td>
+				</tr>
+			</c:otherwise>
+		</c:choose>
 	</tbody>
 </table>
 <form id="searchForm">
@@ -94,58 +94,6 @@
 		return false;
 	});
 	
-	let makeTrTag = function(board){
-		let tr = $("<tr>");
-		let aTag = $("<a>").attr("href", "${pageContext.request.contextPath}/board/boardView.do?what="+board.boNo)
-							.text(board.boTitle);
-		tr.append(
-			$("<td>").html(board.boNo)
-			, $("<td>").html(aTag)
-			, $("<td>").html(board.boWriter)
-			, $("<td>").html(board.boDate)
-			, $("<td>").html(board.boHit)
-			, $("<td>").html(board.boRec)
-		);
-		
-		return tr;
-	}
-	
-	let searchForm = $("#searchForm").on("submit", function(event){
-		event.preventDefault();
-		let url = this.action;
-		let method = this.method;
-		let data = $(this).serialize();
-		$.ajax({
-			url : url,
-			method : method,
-			data : data,
-			dataType : "json",
-			success : function(pagingVO) {
-				listBody.empty();
-				pageTag.val("");
-				let boardList = pagingVO.dataList;
-				let trTags = [];
-				if(boardList.length > 0){
-					$.each(boardList, function(index, board){
-						let tr = makeTrTag(board);
-						trTags.push(tr);
-					});
-				}else{
-					let tr = $("<tr>").html(
-						$("<td>").attr("colspan", "6")
-								 .html("조건에 맞는 게시글이 없음.")
-					);
-					trTags.push(tr);
-				}
-				listBody.append(trTags);
-				let pagingHTML = pagingVO.pagingHTML;
-				pagingArea.html(pagingHTML);
-			},
-			error : function(errorResp) {
-				console.log(errorResp.status);
-			}
-		});
-		return false;
-	}).submit();
+	let searchForm = $("#searchForm");
 </script>
 

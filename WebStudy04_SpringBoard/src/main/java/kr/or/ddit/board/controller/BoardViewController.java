@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardViewController {
 	private final BoardService service;
 
-	@RequestMapping("/board/boardView.do")
+	@RequestMapping("/board/asdasdboardView.do")
 	public ModelAndView boardView(@RequestParam(name="what", required=true) int boNo) {
 		BoardVO vo = service.retriveBoard(boNo);
 		ModelAndView mav = new ModelAndView();

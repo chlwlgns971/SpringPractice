@@ -4,6 +4,28 @@
 	<resultMap type="BoardVO" id="boardListMap" autoMapping="true">
 		<id property="boNo" column="BO_NO" />
 	</resultMap>
+	<sql id="seachFrag">
+		<where>
+			<if test="simpleCondition neq null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+				<choose>
+					<when test="simpleCondition.searchType eq 'title'">
+						INSTR(BO_TITLE, #{simpleCondition.searchWord})> 0
+					</when>
+					<when test="simpleCondition.searchType eq 'writer'">
+						INSTR(BO_WRITER, #{simpleCondition.searchWord})> 0
+					</when>
+					<when test="simpleCondition.searchType eq 'content'">
+						INSTR(BO_CONTENT, #{simpleCondition.searchWord})> 0
+					</when>
+					<otherwise>
+						INSTR(BO_TITLE, #{simpleCondition.searchWord})> 0
+						OR INSTR(BO_WRITER, #{simpleCondition.searchWord})> 0
+						OR INSTR(BO_CONTENT, #{simpleCondition.searchWord})> 0
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+	</sql>
 
 	<!-- 게시글의 목록 조회: 페이징+검색(제목-title, 작성자-writer, 내용-content, 전체) -->
 	<select id="selectBoard" parameterType="int" resultType="BoardVO">
@@ -36,6 +58,7 @@
 		FROM(
 			SELECT F.*, ROWNUM RNUM
 			FROM FREEBOARD F
+			<include refid="seachFrag" />
 		)
 		<![CDATA[
 		WHERE RNUM >= #{startRow} AND RNUM <=#{endRow}
@@ -44,33 +67,34 @@
 	<select id="selectTotalRecord" resultType="int" parameterType="PagingVO">
 		SELECT COUNT(BO_NO)
 		FROM FREEBOARD
+		<include refid="seachFrag" />
 	</select>
 	<update id="incrementBoHit" parameterType="int">
 		UPDATE FREEBOARD
 		SET BO_HIT = BO_HIT + 1
 		WHERE BO_NO = #{boNo}
 	</update>
-	<insert id="insertBoard" parameterType="BoardVO">
-		INSERT INTO FREEBOARD
-		(
-			BO_NO
-			,BO_TITLE
-			,BO_WRITER
-			,BO_IP
-			,BO_MAIL
-			,BO_CONTENT
-			,BO_DATE
-			,BO_PARENT
-		)VALUES(
-			#{boNo,jdbcType=VARCHAR}
-			, #{boTitle,jdbcType=VARCHAR}
-			, #{boWriter,jdbcType=NUMERIC}
-			, #{boIp,jdbcType=NUMERIC}
-			, #{boMail,jdbcType=VARCHAR}
-			, #{boContent,jdbcType=VARCHAR}
-			, TO_DATE(#{boDate,jdbcType=DATE}, 'YYYY-MM-DD')
-			, #{boParent,jdbcType=VARCHAR}
+<!-- 	<insert id="insertBoard" parameterType="BoardVO"> -->
+<!-- 		INSERT INTO FREEBOARD -->
+<!-- 		( -->
+<!-- 			BO_NO -->
+<!-- 			,BO_TITLE -->
+<!-- 			,BO_WRITER -->
+<!-- 			,BO_IP -->
+<!-- 			,BO_MAIL -->
+<!-- 			,BO_CONTENT -->
+<!-- 			,BO_DATE -->
+<!-- 			,BO_PARENT -->
+<!-- 		)VALUES( -->
+<!-- 			#{boNo,jdbcType=VARCHAR} -->
+<!-- 			, #{boTitle,jdbcType=VARCHAR} -->
+<!-- 			, #{boWriter,jdbcType=NUMERIC} -->
+<!-- 			, #{boIp,jdbcType=NUMERIC} -->
+<!-- 			, #{boMail,jdbcType=VARCHAR} -->
+<!-- 			, #{boContent,jdbcType=VARCHAR} -->
+<!-- 			, TO_DATE(#{boDate,jdbcType=DATE}, 'YYYY-MM-DD') -->
+<!-- 			, #{boParent,jdbcType=VARCHAR} -->
 
-		)
-	</insert>
+<!-- 		) -->
+<!-- 	</insert> -->
 </mapper>
