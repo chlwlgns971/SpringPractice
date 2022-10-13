@@ -13,5 +13,11 @@
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="${pageContext.request.contextPath }/boardSync/boardList.do">게시글목록(동기)</a>
     </li>
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="?Language=en">영어</a>
+    </li>
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="?Language=ko">한글</a>
+    </li>
   </ul>
 </nav>

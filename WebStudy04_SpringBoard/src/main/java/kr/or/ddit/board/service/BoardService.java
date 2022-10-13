@@ -14,6 +14,17 @@ public interface BoardService {
 	public BoardVO retriveBoard(int boNo);
 	public List<BoardVO> retriveBoardList(PagingVO<BoardVO> pageVo);
 	public int retirveBoardCount(PagingVO<BoardVO> pageVo);
-//	modifyBoard
-//	removeBoard
+	public int retirveBoardNoCount();
+	/**
+	 * 게시글 수정(인증필요)
+	 * @param boNo
+	 * @return RuntimeException, INVALIDPASSWORD, OK, FAIL
+	 */
+	public ServiceResult modifyBoard(BoardVO board);
+	/**
+	 * 게시글 수정(인증필요)
+	 * @param boNo
+	 * @return RuntimeException, INVALIDPASSWORD, OK, FAIL
+	 */
+	public ServiceResult removeBoard(BoardVO board);
 }

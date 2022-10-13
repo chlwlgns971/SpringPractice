@@ -10,7 +10,7 @@
 	%>
 	alert("<%=message%>")
 	<%
-	session.removeAttribute("message");
+	//session.removeAttribute("message");
 	}
 %>
 </script>

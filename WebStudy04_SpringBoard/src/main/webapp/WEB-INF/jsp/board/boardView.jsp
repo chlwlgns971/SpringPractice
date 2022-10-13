@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 	<table border="1">
 		<c:set value="${board }" var="board" />
 		<c:choose>
@@ -56,8 +49,35 @@
 					<td>부모글</td>
 					<td>${board.boParent }</td>
 				</tr>
+				<tr>
+					<td colspan="2">
+						<c:url value="/board/boardUpdate.do" var="updateURL">
+							<c:param name="what" value="${board.boNo }"/>
+						</c:url>
+						<a href="${updateURL }" class="btn-btn-primary">글 수정</a>
+						<a class="btn-btn-danger" id="deleteBtn">글 삭제</a>
+					</td>
+				</tr>
 			</c:when>
 		</c:choose>
 	</table>
-</body>
-</html>
+	
+<!-- 	TestDrivenDevelopment vs EventDrivenDevelopment -->
+	<c:set var="cPath" value="${pageContext.request.contextPath }" scope="application" />
+	<form name="deleteForm" method="post" action="${cPath }/board/boardDelete.do">
+		<input type="hidden" name="boNo" value="${board.boNo }"/>
+		<input type="hidden" name="boPass"/>
+	</form>
+	<script>
+		$('#deleteBtn').on("click", function(){
+			event.preventDefault();
+			var password = prompt('게시글 비밀번호를 입력하세요.');
+			if(password){
+				document.deleteForm.boPass.value = password;
+				document.deleteForm.submit();
+				document.deleteForm.boPass.value="";
+				document.deleteForm.reset();
+			}
+			return false;
+		})	
+	</script>
