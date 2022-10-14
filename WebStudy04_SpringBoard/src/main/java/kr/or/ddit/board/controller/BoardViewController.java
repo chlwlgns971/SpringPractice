@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.ddit.board.service.BoardService;
+import kr.or.ddit.board.vo.AttatchVO;
 import kr.or.ddit.board.vo.BoardVO;
 import lombok.RequiredArgsConstructor;
 

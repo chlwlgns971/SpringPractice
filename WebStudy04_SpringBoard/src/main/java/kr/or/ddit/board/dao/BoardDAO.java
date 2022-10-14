@@ -17,6 +17,7 @@ public interface BoardDAO {
 	public BoardVO selectBoard(@Param("boNo") int boNo);
 	public int incrementBoHit(@Param("boNo") int boNo);
 	public int incrementBoNo();
+	public int incrementRec(@Param("boNo") int boNo);
 	public List<BoardVO> selectBoardList(PagingVO<BoardVO> pageVo);
 	public int selectTotalRecord(PagingVO<BoardVO> pageVo);
 	public int insertBoard(BoardVO board);

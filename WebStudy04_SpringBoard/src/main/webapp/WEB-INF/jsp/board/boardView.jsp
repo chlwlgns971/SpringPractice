@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-	<table border="1">
+	<table class="table table-bordered table-strip">
 		<c:set value="${board }" var="board" />
 		<c:choose>
 			<c:when test="${not empty board }">
@@ -30,10 +30,6 @@
 					<td>${board.boPass }</td>
 				</tr>
 				<tr>
-					<td>내용</td>
-					<td>${board.boContent }</td>
-				</tr>
-				<tr>
 					<td>작성일</td>
 					<td>${board.boDate }</td>
 				</tr>
@@ -43,19 +39,35 @@
 				</tr>
 				<tr>
 					<td>추천수</td>
-					<td>${board.boRec }</td>
+					<td>
+						<span id="recArea">${board.boRec }</span>
+						<span class="btn btn-success" id="recBtn" data-target="#recArea">추천</span>	
+					</td>
 				</tr>
 				<tr>
 					<td>부모글</td>
 					<td>${board.boParent }</td>
 				</tr>
 				<tr>
+					<td>첨부파일</td>
+					<td>
+						<c:forEach items="${board.attatchList }" var="attatch" varStatus="vs">
+							${attatch.attFilename }(${attatch.attFancysize })
+							${not vs.last?"|":"" }
+						</c:forEach>
+					</td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td>${board.boContent }</td>
+				</tr>
+				<tr>
 					<td colspan="2">
 						<c:url value="/board/boardUpdate.do" var="updateURL">
 							<c:param name="what" value="${board.boNo }"/>
 						</c:url>
-						<a href="${updateURL }" class="btn-btn-primary">글 수정</a>
-						<a class="btn-btn-danger" id="deleteBtn">글 삭제</a>
+						<a href="${updateURL }" class="btn btn-primary">글 수정</a>
+						<a class="btn btn-danger" id="deleteBtn">글 삭제</a>
 					</td>
 				</tr>
 			</c:when>
@@ -80,4 +92,23 @@
 			}
 			return false;
 		})	
+		$("#recBtn").on("click", function(event){
+			let selector = $(this).data("target");
+			
+			$.ajax({
+				url : "${cPath}/board/boardRecommend.do",
+				data : {
+					what:${board.boNo}
+				},
+				dataType : "json",
+				success : function(resp) {
+					if(resp.success){
+						$(selector).html(resp.boRec);
+					}
+				},
+				error : function(errorResp) {
+					console.log(errorResp.status);
+				}
+			});
+		});
 	</script>

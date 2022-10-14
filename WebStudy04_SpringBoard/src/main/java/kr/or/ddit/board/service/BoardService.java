@@ -10,7 +10,7 @@ import kr.or.ddit.board.vo.PagingVO;
  *
  */
 public interface BoardService {
-	public int createBoard(BoardVO board);
+	public ServiceResult createBoard(BoardVO board);
 	public BoardVO retriveBoard(int boNo);
 	public List<BoardVO> retriveBoardList(PagingVO<BoardVO> pageVo);
 	public int retirveBoardCount(PagingVO<BoardVO> pageVo);
@@ -27,4 +27,11 @@ public interface BoardService {
 	 * @return RuntimeException, INVALIDPASSWORD, OK, FAIL
 	 */
 	public ServiceResult removeBoard(BoardVO board);
+	
+	/**
+	 * 
+	 * @param boNo
+	 * @return 갱신된 추천수
+	 */
+	public int recommend(int boNo);
 }
