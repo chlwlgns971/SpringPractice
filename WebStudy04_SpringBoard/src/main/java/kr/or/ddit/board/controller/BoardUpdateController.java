@@ -54,7 +54,7 @@ public class BoardUpdateController {
 			}else{
 				String message = "등록실패";
 				model.addAttribute("message",message);
-				viewName = "board/boardForm";
+				viewName = "board/boardEdit";
 			}
 		}else {
 			viewName = "board/boardEdit";

@@ -3,6 +3,7 @@ package kr.or.ddit.board.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.or.ddit.board.vo.AttatchVO;
 import kr.or.ddit.board.vo.BoardVO;
@@ -36,7 +37,7 @@ public interface AttatchDAO {
 	 * @param attNo
 	 * @return
 	 */
-	public int deleteAttatch(int attNo);
+	public int deleteAttatch(@Param("delAttNos") int[] attNo);
 	
 	/**
 	 * 게시글에 첨부된 모든 파일의 메타데이터 삭제용.

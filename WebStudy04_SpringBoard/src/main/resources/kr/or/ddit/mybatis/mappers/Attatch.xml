@@ -37,4 +37,16 @@
 	<delete id="deleteAttatches" parameterType="int">
 		DELETE FROM ATTATCH WHERE BO_NO = #{boNo, jdbcType=NUMERIC}
 	</delete>
+	<delete id="deleteAttatch" parameterType="int[]">
+		DELETE FROM ATTATCH WHERE ATT_NO IN 
+			<foreach collection="delAttNos" open="(" close=")" item="attNo" separator=",">
+				#{attNo}
+			</foreach>
+	</delete>
+	<select id="selectAttatch" parameterType="int" resultType="AttatchVO">
+		SELECT ATT_FILENAME, ATT_SAVENAME
+			, ATT_FILESIZE, ATT_MIME 
+		FROM ATTATCH 
+		WHERE ATT_NO = #{attNo, jdbcType=NUMERIC}
+	</select>
 </mapper>

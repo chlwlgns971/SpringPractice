@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.or.ddit.board.service.BoardService;
+import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.vo.BoardVO;
 import kr.or.ddit.board.vo.PagingVO;
 import kr.or.ddit.board.vo.SearchVO;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * HandlerAdapter 사용방법(컨트롤러 구현방법)
@@ -37,11 +39,16 @@ import kr.or.ddit.board.vo.SearchVO;
  * 				@RequestMapping(produces, marshalling)
  *
  */
-
+@Slf4j
 @Controller
 public class BoardListController {
-	@Inject
 	private BoardService service;
+	
+	@Inject
+	public void setService(BoardService service) {
+		this.service = service;
+		log.info("주입된 business logic : {}", service.getClass().getName());
+	}
 	
 	@RequestMapping(value="board/boardList.do", method=RequestMethod.GET)
 	public String listUI() {

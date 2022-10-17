@@ -58,4 +58,7 @@ public class BoardVO {
 	
 	private int startNo;
 	private List<AttatchVO> attatchList;
+	
+	//지울 파일번호
+	private int[] delAttNos;
 }

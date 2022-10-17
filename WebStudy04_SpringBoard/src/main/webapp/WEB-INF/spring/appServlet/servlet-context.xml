@@ -45,6 +45,11 @@
 	 p:order="1"
 	/>
 	
+	<bean id="downloadView" class="kr.or.ddit.board.view.DownloadView" />
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" 
+		p:order="2"
+	/>
+	
 <!-- 	정적자원을 이용하기 위한 추가 핸들러(web.xml에서 디폴트 매핑을 하여 톰캣에서 정적자원 처리 불가)	 -->
 	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
 	
