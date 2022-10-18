@@ -1,5 +1,6 @@
 package kr.or.ddit.board.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import kr.or.ddit.validate.DeleteGroup;
 import kr.or.ddit.validate.InsertGroup;
@@ -26,7 +29,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(of="boNo")
 @ToString(exclude= {"boPass", "boContent", "boFiles", "attatchList"})
-public class BoardVO {
+public class BoardVO implements Serializable {
 	@NotNull(groups={UpdateGroup.class, DeleteGroup.class})
 	private Integer boNo;
 	@NotBlank //NotBlank는 insert에서만 체크해야함.
@@ -38,14 +41,16 @@ public class BoardVO {
 	@Email
 	private String boMail;
 	@NotBlank(groups=DeleteGroup.class)
-	private String boPass;
+	@JsonIgnore
+	private transient String boPass;
 	private String boContent;
 	private String boDate;
 	private Integer boHit;
 	private Integer boRec;
 	private Integer boParent;
 	
-	private List<MultipartFile> boFiles;
+	@JsonIgnore
+	private transient List<MultipartFile> boFiles;
 	public void setBoFiles(List<MultipartFile> boFiles) {
 		if(boFiles == null || boFiles.isEmpty()) return;
 		this.boFiles = boFiles;
@@ -55,10 +60,12 @@ public class BoardVO {
 			attatchList.add(new AttatchVO(file));
 		}
 	}
-	
-	private int startNo;
-	private List<AttatchVO> attatchList;
+	@JsonIgnore
+	private transient int startNo;
+	@JsonIgnore
+	private transient List<AttatchVO> attatchList;
 	
 	//지울 파일번호
-	private int[] delAttNos;
+	@JsonIgnore
+	private transient int[] delAttNos;
 }

@@ -28,4 +28,6 @@
 		p:maxUploadSizePerFile="#{appInfo['max-file-size']}"
 		p:maxUploadSize="#{appInfo['max-request-size']}"
 	/>
+	
+	<util:list id="allWsSessions" value-type="org.springframework.web.socket.WebSocketSession"></util:list>
 </beans>
