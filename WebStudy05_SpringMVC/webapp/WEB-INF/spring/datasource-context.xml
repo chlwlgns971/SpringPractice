@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+<!-- 스키마 종류: beans, c, p, util, mybatis-spring -->
+<!-- 스프링과 mybatis연동 -->
+<!-- 1.DataSource bean 등록 -->
+	<util:properties id="dbInfo" location="classpath:/kr/or/ddit/mybatis/DBinfo.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" 
+		p:driverClassName="#{dbInfo.driverClassName}"
+		p:url="#{dbInfo['url']}"
+		p:username="#{dbInfo['user']}"
+		p:password="#{dbInfo['password']}"
+		p:initialSize="#{dbInfo['initialSize']}"
+		p:maxTotal="#{dbInfo['maxTotal']}"
+		p:maxWaitMillis="#{dbInfo['maxWait']}"
+		p:maxIdle="#{dbInfo['maxIdle']}" 
+	/>
+	
+<!-- 	2.SqlSessionFactory 빌드 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" 
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:/kr/or/ddit/mybatis/Configuration.xml"
+		p:mapperLocations="classpath:/kr/or/ddit/mybatis/mappers/*.xml"
+	/>
+<!-- 	3.SqlSessionTemplate 등록 : Optional 안해도 상관없음-->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" 
+		c:sqlSessionFactory-ref="sqlSessionFactory"
+	/>
+<!-- 	4.Mapper Scanner 활용 -->
+<!-- 3번은 옵션이므로 2번과 연결 -->
+	<mybatis-spring:scan base-package="kr.or.ddit.**.dao"
+		annotation="org.apache.ibatis.annotations.Mapper"
+		factory-ref="sqlSessionFactory"
+	/>
+</beans>

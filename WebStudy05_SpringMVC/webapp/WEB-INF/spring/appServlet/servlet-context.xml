@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+	
+<!-- 	스키마 종류: beans, c, p, context, mvc -->
+<!-- Spring (M)VC모듈을 구성하는 전체객체들을 등록하기 위한 설정 파맇. -->
+	<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
+		<context:include-filter type="annotation" 
+			expression="org.springframework.stereotype.Controller"/>	
+		<context:include-filter type="annotation" 
+			expression="org.springframework.web.bind.annotation.ControllerAdvice"/>	
+	</context:component-scan>
+	
+<!-- 	HandleMapping : @Controller(핸들러), @requestMapping(요청) 어노테이션을 트레이싱하고, -->
+<!-- 				요청-핸들러 쌍에 대한 정보를 수집하고, Map을 형성함. -->
+<!-- 	HandlerAdapter : POJO방식으로 구현된 핸들러를 reflection을 기반으로 호출하는 역할. -->
+<!-- 	ViewResolver : Logical View Name 을 기반으로 View Layer를 검색하는 역할. -->
+<!-- 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" /> -->
+<!-- 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" /> -->
+
+<!-- 	이 한줄을 사용하면 spring mvc모델을 만들기 위한 모든게 한꺼번에 선언된다. -->
+	<mvc:annotation-driven validator="validator"></mvc:annotation-driven>
+	
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" 
+		p:validationMessageSource-ref="messageSource"
+	/>
+<!-- 	한가지 전략객체를 여러 구현체로 등록하는 경우, 반드시 order설정 필요. -->
+<!-- 	경우에 따라 order가 가장 마지막이 되어야 하는 전략객체도 있음 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		p:prefix="/WEB-INF/views/"
+		p:suffix=".jsp"
+	/>
+<!-- 	logicalviewName과 등록된 definition name이 동일하면 view해결 -->
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" 
+		p:definitions="/WEB-INF/tiles.xml"
+	/>
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" 
+	 p:order="1"
+	/>
+	
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	<bean id="xmlView" class="org.springframework.web.servlet.view.xml.MappingJackson2XmlView"></bean>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" 
+		p:order="2"
+	/>
+	
+<!-- 	정적자원을 이용하기 위한 추가 핸들러(web.xml에서 디폴트 매핑을 하여 톰캣에서 정적자원 처리 불가, cache-period="0"은 캐시를 남기지 않도록 처리)	 -->
+	<mvc:resources location="/resources/" mapping="/resources/**" cache-period="0" />
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" 
+		p:basenames="kr.or.ddit.msgs.message, kr.or.ddit.msgs.errorMessage"
+	/>
+	
+<!-- 	Locale 쿠기 설정 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" 
+		p:cookieName="localeCookie"
+		p:cookieMaxAge="#{60*60*24*7}"
+	/>
+	
+<!-- 	모든 요청에 대해 필터링 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" 
+				p:paramName="Language"
+			/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
