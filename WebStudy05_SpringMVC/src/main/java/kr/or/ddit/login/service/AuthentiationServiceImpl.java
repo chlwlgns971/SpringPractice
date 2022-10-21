@@ -2,6 +2,8 @@ package kr.or.ddit.login.service;
 
 import javax.inject.Inject;
 
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.commons.exception.UserNotFoundException;
@@ -16,11 +18,12 @@ public class AuthentiationServiceImpl implements AutheticationService {
 
 	@Override
 	public MemberVO authenticate(MemberVO inputData) {
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		MemberVO saved = dao.selectMember(inputData.getMemId());
 		if(saved == null) throw new UserNotFoundException(inputData.getMemId());
 		String inputPass = inputData.getMemPass();
 		String savedPass = saved.getMemPass();
-		if(savedPass.equals(inputPass)) {
+		if(encoder.matches(inputPass, savedPass)) {
 			return saved;
 		}else {
 			throw new BadCredentialException("비밀번호 오류");
